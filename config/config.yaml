@@ -1,4 +1,3 @@
-# config/config.yaml
 lake:
   base_path: "file:///opt/data-lake"          
   bronze: "file:///opt/data-lake/bronze/weather"
