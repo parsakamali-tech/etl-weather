@@ -1,0 +1,33 @@
+# docker-compose.yml
+version: "3.9"
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: datalake
+      POSTGRES_USER: etl_user
+      POSTGRES_PASSWORD: etl_password
+    ports: ["5432:5432"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  airflow:
+    image: apache/airflow:2.10.0
+    depends_on: [postgres]
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://etl_user:etl_password@postgres:5432/datalake
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./spark_jobs:/opt/airflow/spark_jobs
+      - ./sql:/opt/airflow/sql
+      - ./config:/opt/airflow/config
+      - ./data:/opt/input
+      - lake:/opt/data-lake
+    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname a --lastname d --role Admin --email admin@example.com && airflow webserver & airflow scheduler"
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:
+  lake:

@@ -1,0 +1,26 @@
+# config/config.yaml
+lake:
+  base_path: "file:///opt/data-lake"          
+  bronze: "file:///opt/data-lake/bronze/weather"
+  silver: "file:///opt/data-lake/silver/weather"
+  gold:   "file:///opt/data-lake/gold/weather"
+
+input:
+  csv_path: "file:///opt/input/weather.csv"  
+
+spark:
+  app_name: "weather-etl"
+  master: "local[*]"
+  shuffle_partitions: 4
+
+postgres:
+  host: "postgres"
+  port: 5432
+  db:   "datalake"
+  user: "etl_user"
+  password: "etl_password"
+  table_daily: "public.weather_daily"
+  jdbc_driver: "org.postgresql.Driver"
+
+dq:
+  required_columns: ["formatted_date","temperature_c","humidity"]
