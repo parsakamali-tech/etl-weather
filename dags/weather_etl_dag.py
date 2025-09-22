@@ -14,7 +14,7 @@ with DAG(
     dag_id="weather_etl",
     default_args=default_args,
     start_date=datetime(2025, 1, 1),
-    schedule_interval="@daily", # daily at midnight
+    schedule_interval=None, # daily at midnight
     catchup=False, # not working automaticly for past dates 
     tags=["weather", "pyspark", "postgres"],
 ) as dag:

@@ -1,0 +1,13 @@
+FROM apache/airflow:2.10.0 
+
+USER root
+
+# نصب OpenJDK 17 (نسخه جدیدتر)
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jre-headless && \
+    apt-get clean
+
+USER airflow
+
+# نصب Apache Spark provider برای Airflow
+RUN pip install apache-airflow-providers-apache-spark
